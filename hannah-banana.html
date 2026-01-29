@@ -37,7 +37,6 @@
       transition: all 0.3s ease;
     }
 
-    /* YES button below text */
     #yesBtn {
       background: #ffd60a;
       color: #1f3c88;
@@ -45,10 +44,9 @@
       position: relative;
       transform: scale(1);
       margin-top: 20px;
-      margin-right: 15px; /* space between YES and NO at start */
+      margin-right: 15px;
     }
 
-    /* NO button at start next to YES */
     #noBtn {
       background: #d9d9d9;
       color: black;
@@ -101,10 +99,9 @@
 
   <!-- QUESTION CARD -->
   <div class="card" id="card">
-    <img id="startImage" src="minion-start.jpg" alt="Minion asking" style="width:200px; margin-bottom:20px;">
+    <img id="startImage" src="start.jpg" alt="Minion asking" style="width:200px; margin-bottom:20px;">
     <h1>Will you be my Valentine, Hannah? 💛</h1>
 
-    <!-- Buttons start inline -->
     <button id="yesBtn" onclick="yesClicked()">YES 🍌💖</button>
     <button id="noBtn" onmouseover="convertNo()">NO 😐</button>
   </div>
@@ -112,17 +109,17 @@
   <!-- YES SCREEN -->
   <div class="card hidden" id="yesScreen">
     <h1>HANNAH BANANAAAA 🍌💛</h1>
-    <img id="endImage" src="minion-end.jpg" alt="Minion celebrating" style="width:220px; margin-top:20px;">
+    <img id="endImage" src="end.jpg" alt="Minion celebrating" style="width:220px; margin-top:20px;">
     <div class="speech">😏🍌 “You can have my banana”</div>
     <p style="margin-top:15px;">You’re officially my Valentine 💘</p>
   </div>
 
+  <!-- FLOATING EMOJIS -->
   <div class="floating" id="floating"></div>
 
   <script>
     let yesSize = 1;
 
-    // Hovering NO converts to DOUBLE YES
     function convertNo() {
       const noBtn = document.getElementById("noBtn");
       noBtn.textContent = "DOUBLE YES 🍌💖";
@@ -130,12 +127,11 @@
       noBtn.style.color = "#1f3c88";
       noBtn.style.fontWeight = "bold";
 
-      // Make YES button grow slightly when hovering over NO
       const yesBtn = document.getElementById("yesBtn");
       let currentScale = parseFloat(yesBtn.style.transform.replace('scale(','').replace(')','')) || 1;
       yesBtn.style.transform = `scale(${currentScale + 0.15})`;
 
-      // Make DOUBLE YES clickable like YES
+      // Clicking DOUBLE YES works like YES
       noBtn.onclick = yesClicked;
     }
 
@@ -149,7 +145,6 @@
     function launchMinions() {
       const container = document.getElementById("floating");
       const emojis = ["🍌","💛","😍","🥰","🍌","😏"];
-
       for (let i = 0; i < 50; i++) {
         const item = document.createElement("span");
         item.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
@@ -163,3 +158,4 @@
 
 </body>
 </html>
+
