@@ -25,14 +25,7 @@
       position: relative;
     }
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-
-    p {
-      font-size: 18px;
-    }
+    h1 { font-size: 32px; margin-bottom: 10px; }
 
     button {
       font-size: 22px;
@@ -42,29 +35,35 @@
       border-radius: 40px;
       cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
     }
 
+    /* YES button below text */
     #yesBtn {
       background: #ffd60a;
       color: #1f3c88;
       font-weight: bold;
+      position: relative;
+      transform: scale(1);
+      margin-top: 20px;
+      margin-right: 15px; /* space between YES and NO at start */
     }
 
+    /* NO button at start next to YES */
     #noBtn {
       background: #d9d9d9;
-      position: absolute;
+      color: black;
+      position: relative;
+      margin-top: 20px;
     }
 
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
 
     .floating span {
       position: fixed;
       bottom: -30px;
       font-size: 28px;
       animation: floatUp 4s linear infinite;
+      pointer-events: none;
     }
 
     @keyframes floatUp {
@@ -82,58 +81,62 @@
     }
 
     img {
-      width: 220px;
       border-radius: 20px;
       margin-top: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
     }
   </style>
 </head>
 <body>
 
-  <!-- AUDIO (plays after YES) -->
+  <!-- AUDIO -->
   <audio id="bananaSong">
     <source src="minions-banana.mp3" type="audio/mpeg">
   </audio>
 
   <!-- QUESTION CARD -->
   <div class="card" id="card">
+    <img id="startImage" src="minion-start.jpg" alt="Minion asking" style="width:200px; margin-bottom:20px;">
     <h1>Will you be my Valentine, Hannah? 💛</h1>
-    <p>(Minions need answer 🍌)</p>
 
+    <!-- Buttons start inline -->
     <button id="yesBtn" onclick="yesClicked()">YES 🍌💖</button>
-    <button id="noBtn" onmouseover="moveNo()">NO 😐</button>
+    <button id="noBtn" onmouseover="convertNo()">NO 😐</button>
   </div>
 
   <!-- YES SCREEN -->
   <div class="card hidden" id="yesScreen">
     <h1>HANNAH BANANAAAA 🍌💛</h1>
-
-    <!-- PHOTO PLACEHOLDER -->
-    <img src="us-with-minion.jpg" alt="Us with a Minion">
-
-    <!-- SPEECH BUBBLE -->
-    <div class="speech">
-      😏🍌 “You can have my banana”
-    </div>
-
+    <img id="endImage" src="minion-end.jpg" alt="Minion celebrating" style="width:220px; margin-top:20px;">
+    <div class="speech">😏🍌 “You can have my banana”</div>
     <p style="margin-top:15px;">You’re officially my Valentine 💘</p>
   </div>
 
-  <!-- FLOATING EMOJIS -->
   <div class="floating" id="floating"></div>
 
   <script>
     let yesSize = 1;
 
-    function moveNo() {
+    // Hovering NO converts to DOUBLE YES
+    function convertNo() {
       const noBtn = document.getElementById("noBtn");
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 100);
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+      noBtn.textContent = "DOUBLE YES 🍌💖";
+      noBtn.style.background = "#ffd60a";
+      noBtn.style.color = "#1f3c88";
+      noBtn.style.fontWeight = "bold";
 
-      yesSize += 0.15;
-      document.getElementById("yesBtn").style.transform = `scale(${yesSize})`;
+      // Make YES button grow slightly when hovering over NO
+      const yesBtn = document.getElementById("yesBtn");
+      let currentScale = parseFloat(yesBtn.style.transform.replace('scale(','').replace(')','')) || 1;
+      yesBtn.style.transform = `scale(${currentScale + 0.15})`;
+
+      // Make DOUBLE YES clickable like YES
+      noBtn.onclick = yesClicked;
     }
 
     function yesClicked() {
@@ -151,6 +154,7 @@
         const item = document.createElement("span");
         item.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
         item.style.left = Math.random() * 100 + "vw";
+        item.style.fontSize = (20 + Math.random() * 20) + "px";
         item.style.animationDuration = (2 + Math.random() * 3) + "s";
         container.appendChild(item);
       }
@@ -159,6 +163,3 @@
 
 </body>
 </html>
-
-
-
